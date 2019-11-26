@@ -34,8 +34,8 @@ Right now we are at level-1 SSR, i.e., we still require the client to do the hea
 
 The application is essentially split in two parts:
 
-- A client-side entry point via `src/client/index.tsx`
-- A server-side entry point via `src/server/index.tsx` using `src/server/content.tsx`
+- A client-side entry point via `src/client/index.tsx` (effectively used by `src/client/index.html`)
+- A server-side entry point via `src/server/index.tsx` using `piral-ssr-utils`
 
 Both parts are using `src/common/app.tsx` for accessing the application. The only difference between the client and server is that the latter is just taking care about retrieving a `string`, while the former performs an hydration on the DOM.
 
@@ -46,41 +46,47 @@ The state is already predetermined (see `src/common/instance.tsx`) and will be e
 There are two crucial parts. The first one is how to retrieve the pilets later on:
 
 ```ts
-declare global {
-  interface Window {
-    __pilets__?: Array<PiletMetadata>;
-  }
-}
+import * as React from 'react';
+import { createInstance } from 'piral-core';
+import { configForServerRendering } from 'piral-ssr-utils/runtime';
 
-const instance = createInstance({
-  requestPilets() {
-    const pilets = window.__pilets__;
-    return Promise.resolve(pilets || []);
-  },
-});
+export function createAppInstance() {
+  return createInstance(
+    configForServerRendering({
+      // ... standard configuration
+    }),
+  );
+}
 ```
 
-The pilets are picked up from the `window` if available, otherwise we just an empty array of pilets. In the latter case we assume we are in debug mode.
+By using `configForServerRendering` the pilets are picked up from the `window` if available, otherwise we just an empty array of pilets. In the latter case we assume we are in debug mode.
 
 But how are the pilets entering the `window` global? For this we need to look what the SSR actually returns to the browser:
 
 ```ts
-export async function renderContent(pilets: Array<PiletMetadata>) {
-  const embeddedPilets = await readRemotePilets(pilets);
+import { renderFromServer } from 'piral-ssr-utils';
+
+async function sendIndex(_: express.Request, res: express.Response) {
   const app = createApp();
-  const body = renderToString(app);
-  return `<!doctype html><head><meta charset="utf-8"><title>React SSR Sample</title></head><body><div id="app">${body}</div>
-<script>
-window.__pilets__ = ${JSON.stringify(embeddedPilets)};
-</script>
-<script src="dynamic.js"></script>
-</body>`;
+  const content = await renderFromServer(app, {
+    getPilet(url) {
+      return readRemoteText(url);
+    },
+    async getPiletsMetadata() {
+      const res = await readRemoteJson(feedUrl);
+      return res.items;
+    },
+    fillTemplate(body, script) {
+      return indexHtml
+        .replace('<div id="app"></div>', `<div id="app">${body}</div>`)
+        .replace('<noscript id="data"></noscript>', script);
+    },
+  });
+  res.send(content);
 }
 ```
 
-We set the `window.__pilets__` with another script, which is run just before including our application. The `readRemotePilets` helper is actually just transforming the feed response (including remote links) to a plain response including the content in form `content`.
-
-**Important**: Right now this does not deal with remote resources or bundle splitting of pilets. :warning: This is still WIP and we'll update this sample soon.
+We set the `window.__pilets__` with another script (called `script`), which is run just before including our application. The `renderFromServer` helper is actually just transforming the feed response (including remote links) to a plain response including the content in form `content`.
 
 ## License
 

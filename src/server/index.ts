@@ -1,14 +1,30 @@
 import * as express from 'express';
+import { readFileSync } from 'fs';
 import { resolve } from 'path';
-import { port, feedUrl, serverUrl } from './constants';
-import { renderContent } from './content';
-import { readRemoteJson } from './utils';
+import { renderFromServer } from 'piral-ssr-utils';
+import { port, feedUrl, serverUrl, distDir } from './constants';
+import { readRemoteJson, readRemoteText } from './utils';
+import { createApp } from '../common/app';
 
 const app = express();
+const indexHtml = readFileSync(resolve(__dirname, distDir, 'index.html'), 'utf8');
 
 async function sendIndex(_: express.Request, res: express.Response) {
-  const metadata = await readRemoteJson(feedUrl);
-  const content = await renderContent(metadata.items);
+  const app = createApp();
+  const content = await renderFromServer(app, {
+    getPilet(url) {
+      return readRemoteText(url);
+    },
+    async getPiletsMetadata() {
+      const res = await readRemoteJson(feedUrl);
+      return res.items;
+    },
+    fillTemplate(body, script) {
+      return indexHtml
+        .replace('<div id="app"></div>', `<div id="app">${body}</div>`)
+        .replace('<noscript id="data"></noscript>', script);
+    },
+  });
   res.send(content);
 }
 
@@ -47,7 +63,7 @@ app.get('/pilets/2.js', (_, res) => {
 // resolve any static content, such as /dynamic.js
 app.get(
   '*',
-  express.static(resolve(__dirname, '../../dist'), {
+  express.static(resolve(__dirname, distDir), {
     fallthrough: true,
   }),
 );
