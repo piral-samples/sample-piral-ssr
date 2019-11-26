@@ -34,12 +34,12 @@ Right now we are at level-1 SSR, i.e., we still require the client to do the hea
 
 The application is essentially split in two parts:
 
-- A client-side entry point via `src/dynamic.tsx`
-- A server-side entry point via `src/index.tsx` using `src/static.tsx`
+- A client-side entry point via `src/client/index.tsx`
+- A server-side entry point via `src/server/index.tsx` using `src/server/content.tsx`
 
-Both parts are using `src/app.tsx` for accessing the application. The only difference between `dynamic.tsx` and `static.tsx` is that the latter is just taking care about retrieving a `string`, while the former performs an hydration on the DOM.
+Both parts are using `src/common/app.tsx` for accessing the application. The only difference between the client and server is that the latter is just taking care about retrieving a `string`, while the former performs an hydration on the DOM.
 
-The state is already predetermined (see `src/instance.tsx`) and will be evaluated equally on the server and the client. This results in the right rendering from the server and the client.
+The state is already predetermined (see `src/common/instance.tsx`) and will be evaluated equally on the server and the client. This results in the right rendering from the server and the client.
 
 ## How to Embed
 

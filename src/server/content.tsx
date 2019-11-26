@@ -1,7 +1,7 @@
 import { renderToString } from 'react-dom/server';
 import { PiletMetadata } from 'piral-core';
 import { readRemotePilets } from './utils';
-import { createApp } from './app';
+import { createApp } from '../common/app';
 
 export async function renderContent(pilets: Array<PiletMetadata>) {
   const embeddedPilets = await readRemotePilets(pilets);
@@ -11,6 +11,6 @@ export async function renderContent(pilets: Array<PiletMetadata>) {
 <script>
 window.__pilets__ = ${JSON.stringify(embeddedPilets)};
 </script>
-<script src="dynamic.js"></script>
+<script src="index.js"></script>
 </body>`;
 }

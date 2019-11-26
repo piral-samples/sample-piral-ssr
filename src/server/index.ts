@@ -1,7 +1,7 @@
 import * as express from 'express';
 import { resolve } from 'path';
 import { port, feedUrl, serverUrl } from './constants';
-import { renderContent } from './static';
+import { renderContent } from './content';
 import { readRemoteJson } from './utils';
 
 const app = express();
@@ -47,7 +47,7 @@ app.get('/pilets/2.js', (_, res) => {
 // resolve any static content, such as /dynamic.js
 app.get(
   '*',
-  express.static(resolve(__dirname, '../dist'), {
+  express.static(resolve(__dirname, '../../dist'), {
     fallthrough: true,
   }),
 );
