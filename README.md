@@ -14,6 +14,22 @@ npm i && npm run build && npm start
 
 **Remark**: This sample requires Node.js and NPM. The used port is `3000`, which could be re-configured easily (e.g., via an environment variable `PORT`).
 
+## Status / Covered
+
+There are multiple levels of SSR. Every level adds another piece of complexity. The jumps are getting higher per level.
+
+1. CSR, leave everything as-is
+2. "shallow" ("level-0") SSR that places the feed service response in the delivered code
+3. **"level-1" SSR that places the (JS-bundles from the) pilets from the feed service response in the delivered code**
+4. "level-2" SSR that pre-evaluates the setup methods of the pilets; the initial state is already delivered and the pilets are all bundled together with the main code (setup will not be run again)
+5. "level-3" SSR that does not stop at the setup method - actually the whole thing is rendered and hydrated from there again
+
+More details on these levels are in the original [issue at GitHub](https://github.com/smapiot/piral/issues/35).
+
+Right now we are at level-1 SSR, i.e., we still require the client to do the heavy lifting, but we can boost the startup time drastically by embedding all necessary (dynamic) resources (i.e., the pilets) in a single response.
+
+**Remark**: Most likely we will never reach level-3 as this is way too complex; not only for Piral itself, but also for developers using Piral. In this case pilets would need to be developed super careful such that they just work without a real DOM underneath. This kind of development is unlikely.
+
 ## Important Pieces
 
 The application is essentially split in two parts:
