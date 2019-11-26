@@ -1,0 +1,28 @@
+# Exclude compiled files
+dist
+src/initializers/*/lib
+src/packages/*/lib
+src/pages/*/lib
+src/samples/*/lib
+__generated__
+
+# OS files
+.DS_STORE
+
+# npm files
+node_modules
+yarn.lock
+*.log
+
+# Editor files
+.idea
+.vscode
+*.sublime-project
+*.sublime-workspace
+
+coverage
+.cache
+.nyc_output
+
+# Generated Typings
+docs/types/*.json

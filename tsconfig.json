@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "noImplicitAny": false,
+    "removeComments": false,
+    "jsx": "react",
+    "noLib": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "target": "es6",
+    "sourceMap": true,
+    "lib": ["es6", "dom", "esnext"]
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

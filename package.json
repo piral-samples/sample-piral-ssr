@@ -1,0 +1,54 @@
+{
+  "name": "sample-piral-ssr",
+  "version": "1.0.0",
+  "description": "A simple setup for server-side rendering of a Piral instance.",
+  "homepage": "https://piral.io",
+  "main": "src/index.ts",
+  "typings": "src/index.ts",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:smapiot/sample-piral-ssr.git"
+  },
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "parcel build src/dynamic.tsx",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "keywords": [
+    "piral",
+    "pilet",
+    "server",
+    "service",
+    "sample",
+    "rendering",
+    "react",
+    "hydrate",
+    "ssr"
+  ],
+  "author": {
+    "name": "smapiot",
+    "url": "https://smapiot.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/express": "^4.17.2",
+    "@types/react": "^16.9.11",
+    "@types/react-dom": "^16.9.4",
+    "@types/request": "^2.48.3",
+    "parcel-bundler": "^1.12.4"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "piral-core": "^0.8.4",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2",
+    "request": "^2.88.0",
+    "ts-node": "^8.5.2",
+    "typescript": "^3.7.2"
+  }
+}
