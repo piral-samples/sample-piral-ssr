@@ -1,8 +1,10 @@
-[![Piral Logo](https://github.com/smapiot/piral/raw/master/docs/assets/logo.png)](https://piral.io)
+[![Piral Logo](https://github.com/smapiot/piral/raw/develop/docs/assets/logo.png)](https://piral.io)
 
-# [Sample Piral SSR](https://piral.io) &middot; [![GitHub License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/smapiot/piral/blob/master/LICENSE) [![GitHub Tag](https://img.shields.io/github/tag/smapiot/piral.svg)](https://github.com/smapiot/piral/releases) [![Gitter Chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/piral-io/community)
+# [Piral Sample](https://piral.io) &middot; [![GitHub License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/smapiot/piral/blob/main/LICENSE) [![Gitter Chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/piral-io/community)
 
-A sample Node.js server for server-side rendering (SSR) a Piral instance.
+> Hydrate Piral from Server-Side Rendering
+
+:zap: A sample Node.js server for server-side rendering (SSR) a Piral instance.
 
 ## Getting Started
 
@@ -90,4 +92,4 @@ We set the `window.__pilets__` with another script (called `script`), which is r
 
 ## License
 
-Piral is released using the MIT license. For more information see the [license file](./LICENSE).
+Piral and this sample code is released using the MIT license. For more information see the [license file](./LICENSE).
