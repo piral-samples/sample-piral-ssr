@@ -3,11 +3,15 @@ import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { renderFromServer } from 'piral-ssr-utils';
 import { port, feedUrl, serverUrl, distDir } from './constants';
-import { readRemoteJson, readRemoteText } from './utils';
+import { readRemoteJson, readRemoteText, registerAssetResolver } from './utils';
 import { createApp } from '../common/app';
 
 const app = express();
-const indexHtml = readFileSync(resolve(__dirname, distDir, 'index.html'), 'utf8');
+const dist = resolve(__dirname, distDir);
+const manifest = readFileSync(resolve(dist, 'manifest.json'), 'utf8');
+const indexHtml = readFileSync(resolve(dist, 'index.html'), 'utf8');
+
+registerAssetResolver(manifest);
 
 async function sendIndex(_: express.Request, res: express.Response) {
   const app = createApp();

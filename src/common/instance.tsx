@@ -12,6 +12,7 @@ export function createAppInstance() {
           Layout: ({ children }) => (
             <div>
               <h1>This is the layout</h1>
+              <img src={require('./assets/piral.png')} alt="Piral Logo" />
               <p>Just rendered like so ...</p>
               <ul>
                 <li>
